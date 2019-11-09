@@ -14,7 +14,7 @@ class Autenticador {
 
     public function guardarCookie()
     {
-        
+
     }
 
 }

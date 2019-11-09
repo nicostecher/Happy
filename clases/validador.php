@@ -1,7 +1,7 @@
 <?php
 
 class Validador {
-  
+
     public function validarLogin(string $email, string $password): array
     {
         $array = [];
@@ -38,7 +38,7 @@ class Validador {
         return !filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
-   
+
     public function validarVacio(string $valor): bool
     {
         return strlen(trim($valor)) === 0;

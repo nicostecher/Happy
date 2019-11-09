@@ -1,12 +1,12 @@
-<? class producto{
+<? class Producto{
     private $nombre;
     private $descripcion;
     private $cantidad;
     private $valor;
     private $disponibilidad;
 
-    public function __contrusct(string $nombre, string $descripcion, integer $cantidad, float $valor, boolean $disponibilidad) {
-        
+    public function __contruct(string $nombre, string $descripcion, integer $cantidad, float $valor, boolean $disponibilidad) {
+
        $this->nombre=$nombre;
        $this->descripcion=$descripcion;
        $this->cantidad=$cantidad;
@@ -41,7 +41,7 @@
     public function setValor(float $valor){
         $this->valor=$valor;
     }
-    
+
     public function getValor() : float{
         return $this->valor;
     }
