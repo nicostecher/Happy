@@ -1,6 +1,5 @@
 <?php
 require_once("clases/autoload.php");
-session_start();
 function estaElUsuarioLogeado () {
   if (isset($_SESSION["email"])) {
       return true;
@@ -40,14 +39,10 @@ if(empty($errores)){
  if (isset($_POST['recordarme'])) {
   setcookie('recordarme', $email, time() + 60*60*24*7);
   };
-  var_dump("HASTA AKAH LLEGAMO ");
-  exit;
+
   //SESSION!! instanciar autenticador, y active el session y gaurde el usuario.
 }
-
-
 }
-
 
 
 ?>

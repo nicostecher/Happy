@@ -30,11 +30,11 @@ class Login{
     }
 
 //OTRAS FUNCIONES//
-  public function validarse(Validador){
+  public function validarse($validador){
     //????? //
   }
 
-  public function traerBD(BaseDatos){
+  public function traerBD($bdd){
     //como la traigo????//
   }
 

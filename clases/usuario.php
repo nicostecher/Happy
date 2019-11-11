@@ -1,7 +1,8 @@
-<?class Usuario {
+<?php
+class Usuario {
     private $email;
     private $nombre;
-    private $apellido
+    private $apellido;
     private $password;
     private $avatar;
     private $tarjeta;

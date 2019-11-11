@@ -1,3 +1,24 @@
+<?php
+if ($_POST){
+//PONER LOS DATOS DEL USUARIO EN UN ARRAY, Y ESE ARRAY TRANSFORMARLO EN UN JSON//
+  $datosDelUsuario=[];
+  $hashPassword="";
+  $hashPassword=password_hash($_POST['password'],PASSWORD_DEFAULT);
+  $datosDelUsuario = [
+    'nombre' => $_POST['nombre'],
+    'apellido'=>($_POST['apellido']),
+    'email'=>($_POST['email']),
+    'password'=>$hashPassword,
+    'fotoDePerfil'=> ($_FILES['fotoDePerfil'])
+  ];
+  $bdd = file_get_contents('archivosDelUsuario.json');
+  $usuarios = json_decode($bdd,true);
+  $usuarios[] = $datosDelUsuario;
+  $jsonDatosDelUsuario=json_encode($usuarios);
+  file_put_contents('archivosDelUsuario.json',$jsonDatosDelUsuario);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +28,7 @@
   <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/carrito.css">
-  
+
   <title>Carrito</title>
 </head>
 <body>
@@ -47,7 +68,7 @@
               <option value="6">6</option>
               <option value="7">7</option>
               <option value="8">8</option>
-              
+
             </select>
             <input type="button" value="Comprar" class="comprar">
           </form>
@@ -55,7 +76,7 @@
         </div>
 
       </section>
-  
+
       <section class="productos">
         <div class="producto1">
         <div class="titulo-productos">
@@ -80,7 +101,7 @@
               <option value="6">6</option>
               <option value="7">7</option>
               <option value="8">8</option>
-              
+
             </select>
             <input type="button" value="Comprar" class="comprar">
           </form>
@@ -88,7 +109,7 @@
         </div>
 
       </section>
-    
+
     </main>
 
     <footer>
