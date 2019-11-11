@@ -1,7 +1,7 @@
-<?class usuario {
+<?php class usuario {
     private $email;
     private $nombre;
-    private $apellido
+    private $apellido;
     private $password;
     private $avatar;
 
