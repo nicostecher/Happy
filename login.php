@@ -1,21 +1,14 @@
 <?php
-<<<<<<< HEAD
-require_once("autoload.php")
-=======
+
 require_once("clases/autoload.php");
->>>>>>> 0dab5bf030dc8eb88a87ea8c1530f4c2e16242e5
-session_start();
+
 function estaElUsuarioLogeado () {
   if (isset($_SESSION["email"])) {
-      return true;
+      return true; //FALTA HEADER LOCATION
   }
   return false;
 }
 
-//CREAR LA SESSION DEL USUARIO//
-if (isset($_COOKIE['recordarme'])) {
-  $_SESSION['email'] = $_COOKIE['recordarme'];
-}
 
 if(estaElUsuarioLogeado()){
   header('location:profile.php');
@@ -44,14 +37,10 @@ if(empty($errores)){
  if (isset($_POST['recordarme'])) {
   setcookie('recordarme', $email, time() + 60*60*24*7);
   };
-  var_dump("HASTA AKAH LLEGAMO ");
-  exit;
+
   //SESSION!! instanciar autenticador, y active el session y gaurde el usuario.
 }
-
-
 }
-
 
 
 ?>

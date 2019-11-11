@@ -6,6 +6,7 @@ class Registro {
   private $avatar;
   private $nombre;
   private $apellido;
+  private $datos;
 
   //CONSTRUCT//
   public function __construct(string $email,string $password, string $avatar,string $nombre, string $apellido){
@@ -65,11 +66,11 @@ class Registro {
 
   // //
 
-  public function redirigirABD(BaseDatos){
+  public function redirigirABD(BaseDatos $bd){
     // USO put ????---- JUNTO TODOS LOS DATOS EN UN ARRAY Y ESTE ARRAY LO MANO A BASE DE DATOS?? //
   }
 
-  public function validarse(Validador){
+  public function validarse(Validador $validador){
     //????? //
   }
 }

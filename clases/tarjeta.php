@@ -1,4 +1,5 @@
-<? class Tarjeta{
+<?php
+class Tarjeta{
     //ATRIBUTOS//
     private $fechaVencimiento;
     private $codigoSeguridad;
@@ -54,9 +55,6 @@
         $this->numeroTarjeta=$numeroTarjeta;
     }
 
-    public function getNumeroTarjeta(): int{
-        return $this->numeroTarjeta;
-    }
 
     public function setMetodoPago(metodoPago $metodoPago){
         $this->metodoPago=$metodoPago;

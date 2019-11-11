@@ -7,7 +7,7 @@ class Carrito{
   private $usuario;
 
   //CONSTRUCTOR//
-  public __construct(Producto $producto, int $cantidad, int $total, Usuario $usuario) {
+  public function __construct(Producto $producto, int $cantidad, int $total, Usuario $usuario){
     $this->producto=$producto;
     $this->cantidad=$cantidad;
     $this->total=$total;
@@ -36,11 +36,11 @@ class Carrito{
   }
 
   public function seleccionarProducto(){
-    isset $producto;
+    //isset $producto;
   }
 
   public function deseleccionarProducto(){
-    !isset  $producto
+    //!isset  $producto;
   }
 
   public function setUsuario(Usuario $usuario){

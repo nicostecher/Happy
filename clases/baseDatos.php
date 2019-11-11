@@ -4,7 +4,7 @@ class BaseDatos{
   //ATRIBUTOS//
   private $email;
   private $nombre;
-  private $apellido
+  private $apellido;
   private $password;
   private $avatar;
   private $tarjeta;
@@ -76,7 +76,7 @@ class BaseDatos{
   }
 
   //OTRAS FUNCIONES//
-  public function traerDatosRegistro(Registro){
+  public function traerDatosRegistro(Registro $datos){
     //COMO TRAIGO ESOS DATOS???//
   }
 }

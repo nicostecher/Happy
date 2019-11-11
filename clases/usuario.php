@@ -1,4 +1,5 @@
-<?php class usuario {
+<?php
+class Usuario {
     private $email;
     private $nombre;
     private $apellido;

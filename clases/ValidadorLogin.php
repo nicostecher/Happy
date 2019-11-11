@@ -1,5 +1,4 @@
 <?php
-
 class ValidadorLogin {
   private $email;
   private $password;
@@ -9,16 +8,11 @@ class ValidadorLogin {
     {
       $this->email = $email;
       $this->password = $password;
-
-      $completeSuEmail = validarEmail();
-      $completeSuContrasena =validarContrasena();
-      $noEsUnMail= noEsUnEmail();
-
     }
     public function validar(){
-      validarEmail();
-      noEsUnEmail();
-      validarContrasena();
+      $this->validarEmail();
+      $this->noEsUnEmail();
+      $this->validarContrasena();
       return $this->errores;
     }
     //VALIDACION//

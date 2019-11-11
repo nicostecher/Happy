@@ -1,11 +1,9 @@
 <?php
 
 abstract class MetodoPago
-{
 
-  abstract function mercadoPago(mercadoPago $mercadoPago){
-    
-  }
+{
+  public abstract function mercadoPago(mercadoPago $mercadoPago);
 }
 
 
