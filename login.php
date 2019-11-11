@@ -1,4 +1,5 @@
 <?php
+require_once("clases/autoload.php");
 session_start();
 function estaElUsuarioLogeado () {
   if (isset($_SESSION["email"])) {
@@ -18,53 +19,37 @@ if(estaElUsuarioLogeado()){
 
 //VARIABLES DE LOS DATOS QUE LLENA EL USUARIO EN EL FORMULARIO (ESTAN LLAMADOS DENTRO DE LOS VALUES)//
 $email="";
+$password="";
 
 //VARIABLES QUE SE USAN PARA TIRAR EL MENSAJE DE "ERROR NO COMPLETASTE EL NOMBRE"//
 $completeSuEmail = "";
 $completeSuContrasena ="";
 $noEsUnMail= "";
 
-
+$errores = [];
 //PERSISTENCIA//
 if($_POST){
-  $email=$_POST["email"];
-  $completeSuEmail = validarEmail();
-  $completeSuContrasena =validarContrasena();
-  $noEsUnMail= noEsUnEmail();
-
-  
+  $email = $_POST['email'];
+  $validarLogin = new ValidadorLogin($_POST['email'],$_POST['password']);
+  $errores = $validarLogin->validar();
 
 
-  
+
+if(empty($errores)){
 //GUARDAR LA COOCKIE
  if (isset($_POST['recordarme'])) {
   setcookie('recordarme', $email, time() + 60*60*24*7);
   };
+  var_dump("HASTA AKAH LLEGAMO ");
+  exit;
+  //SESSION!! instanciar autenticador, y active el session y gaurde el usuario.
+}
 
 
 }
 
-//VALIDACION//
-function validarEmail(){
-  if (strlen($_POST["email"])==0){
-    $completeSuEmail = "Complete su email <br>";
-    return $completeSuEmail;
-  }
-}
 
-function noEsUnEmail(){
-  if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)){
-   $noEsUnMail= "El campo no es un email <br>";
-   return $noEsUnMail;
-  }
-}
 
-function validarContrasena() {
-if (strlen ($_POST["password"])==0) {
-   $completeSuContrasena= "La contraseña esta vacia <br>";
-   return $completeSuContrasena;
-  };
-}
 ?>
 
 <!DOCTYPE html>
@@ -88,10 +73,10 @@ if (strlen ($_POST["password"])==0) {
       <div class="formulario">
       <label for="email">
         <p>Usuario:</p>
-        <input type="text" name="email" value="<?php $email ?>" id="email" placeholder="Complete el campo">
+        <input type="text" name="email" value="<?= $email ?>" id="email" placeholder="Complete el campo">
         <br>
-        <span class="error"><?= $completeSuEmail ?></span>
-        <span class="error"><?= $noEsUnMail ?></span>
+        <small class="error"><?= $errores['email'][0] ?? '' ?></small>
+        <small class="error"><?= $errores['email'][1] ?? '' ?></small>
       </label>
       <br>
       <br>
@@ -99,10 +84,10 @@ if (strlen ($_POST["password"])==0) {
         <p>Contraseña:</p>
         <input type="password" name="password" value="" id="password" placeholder="Complete el campo">
         <br>
-        <?php echo $completeSuContrasena ?>
+        <?= $errores['password'][0] ?? '' ?>
       </label>
       <br>
-     
+
        <input type="checkbox" name="recordarme" id="recordarme" value="rec" checked>
        <label for="recordar">Recordarme</label>
       <br>
