@@ -7,13 +7,14 @@ class Usuario {
     private $avatar;
     private $tarjeta;
 
-    public function __construct(string $nombre, string $apellido,string $email,string $password, string $avatar,Tarjeta $tarjeta){
+    public function __construct(string $nombre, string $apellido,string $email,string $password, $avatar){
 
     $this->nombre=$nombre;
     $this->apellido=$apellido;
     $this->email=$email;
     $this->avatar=$avatar;
-    $this->tarjeta=$tajeta;
+    $this->password=$password;
+   
 
     }
 

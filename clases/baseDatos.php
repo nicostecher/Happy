@@ -1,83 +1,39 @@
 <?php
+
 class BaseDatos{
 
-  //ATRIBUTOS//
-  private $email;
-  private $nombre;
-  private $apellido;
-  private $password;
-  private $avatar;
-  private $tarjeta;
+  public function guardarUsuario(Usuario $usuario){
+   
+    $bd=file_get_contents("archivosDelUsuario.json");
 
-  //CONSTRUCTOR//
-  public function __construct(string $nombre, string $apellido,string $email,string $password, string $avatar,Tarjeta $tarjeta){
+    $usuarios=json_decode($bd,true);
 
-  $this->nombre=$nombre;
-  $this->apellido=$apellido;
-  $this->email=$email;
-  $this->avatar=$avatar;
-  $this->tarjeta=$tajeta;
+    
 
-  }
+    $usuario=[
+      "nombre"=>$usuario->getNombre(),
+      "apellido"=>$usuario->getApellido(),
+      "email"=>$usuario->getEmail(),
+      "password"=>password_hash($usuario->getPassword(),PASSWORD_DEFAULT),
+      "avatar"=>$usuario->getAvatar(),
+    ];
 
-  //SETTERS Y GETTERS//
-  public function setNombre(string $nombre){
-    $this->nombre=$nombre;
-  }
+    $usuarios[]=$usuario;
 
-  public function getNombre():string{
-    return $this->nombre;
+    $usuariosJson=json_encode($usuarios);
+    
+    file_put_contents("archivosDelUsuario.json",$usuariosJson);
+  
+    
+  
   }
+ 
+};
 
-  public function setApellido(string $apellido){
-    $this->apellido=$apellido;
-  }
+?>
 
-  public function getApellido():string{
-    return $this->apellido;
-  }
 
-  public function setEmail(string $email)
-  {
-      $this->email = $email;
-  }
 
-  public function getEmail(): string
-  {
-      return $this->email;
-  }
 
-  public function setPassword(string $password)
-  {
-      $this->password = $password;
-  }
+  
 
-  public function getPassword(): string
-  {
-      return $this->password;
-  }
-
-  public function setAvatar(string $avatar)
-  {
-      $this->avatar = $avatar;
-  }
-  public function getAvatar(): string
-  {
-      return $this->avatar;
-  }
-
-  public function setTarjeta(Tarjeta $tarjeta)
-  {
-      $this->tarjeta = $tarjeta;
-  }
-  public function getTarjeta(): Tarjeta
-  {
-      return $this->tarjeta;
-  }
-
-  //OTRAS FUNCIONES//
-  public function traerDatosRegistro(Registro $datos){
-    //COMO TRAIGO ESOS DATOS???//
-  }
-}
- ?>

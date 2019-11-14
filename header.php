@@ -1,3 +1,8 @@
+<?php
+
+require_once("clases/autoload.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -33,11 +38,17 @@
 
               <div class="login-compras">
                 <div class="usuario">
+                <ul>
+                  <?php if(isset($_SESSION["email"])){?>
+                  <a href="profile.php"><i class="fas fa-user"></i></a>
+                  <a href="logout.php"><i class="fas fa-sign-out-alt"></i></a></li>
+                  <?php }else{ ?>
                   <a href="registrate.php"><i class="fas fa-sign-in-alt"></i></a>
-                  <a href="logout.php"><i class="fas fa-sign-out-alt"></i></a>
                   <a href="login.php"><i class="fas fa-user"></i></a>
+                  <?php } ?>
+                </ul>
+                 
                 </div>
-
 
               <div class="carrito">
                   <a href="carrito.php"> <i class="fas fa-shopping-cart"></i></a>
@@ -49,9 +60,12 @@
 
               <div class="login-escritorio">
                 <ul>
+                <?php if(isset($_SESSION["email"])){?>
                   <li><a class="link" href="logout.php">cerrar sesión</a></li>
+                  <?php }else{ ?>
                   <li><a class ="link" href="login.php">Login</a></li>
                   <li><a class= "link"href="registrate.php">Registrarse</a></li>
+                  <?php } ?>
                 </ul>
               </div>
       </header>

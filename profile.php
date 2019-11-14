@@ -1,3 +1,6 @@
+<?php
+require_once("clases/autoload.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -39,7 +42,7 @@
               <br>
               </div>
           <div class="datos-rellenados">
-              <p>John</p>
+              <p>jhon</p>
               <br>
               <p>Doe</p>
               <br>

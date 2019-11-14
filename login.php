@@ -1,18 +1,6 @@
 <?php
-
 require_once("clases/autoload.php");
 
-function estaElUsuarioLogeado () {
-  if (isset($_SESSION["email"])) {
-      return true; //FALTA HEADER LOCATION
-  }
-  return false;
-}
-
-
-if(estaElUsuarioLogeado()){
-  header('location:profile.php');
-};
 
 //VARIABLES DE LOS DATOS QUE LLENA EL USUARIO EN EL FORMULARIO (ESTAN LLAMADOS DENTRO DE LOS VALUES)//
 $email="";
@@ -22,25 +10,40 @@ $password="";
 $completeSuEmail = "";
 $completeSuContrasena ="";
 $noEsUnMail= "";
-
 $errores = [];
-//PERSISTENCIA//
+
+
 if($_POST){
+
+  //PERSISTENCIA//
   $email = $_POST['email'];
-  $validarLogin = new ValidadorLogin($_POST['email'],$_POST['password']);
-  $errores = $validarLogin->validar();
+  $Password=$_POST['password'];
+  
+  //VALIDAMOS EL LOGIN//
+  if(!$errores){
+    $validarLogin = new ValidadorLogin($_POST['email'],$_POST['password']);
+    $errores = $validarLogin->validar();
+    
+    $buscarUsuario= new Autenticador();
+    $usuarioRegistrado=$buscarUsuario->buscarUsuario($email);
+  
+    
+  }
 
+  //CREEAMOS LA COOKIE//
+  if(isset($_POST["recordarme"])){
+    setcookie("recordarme",$email,time() + 60*24*7);
+  }
 
-
-if(empty($errores)){
-//GUARDAR LA COOCKIE
- if (isset($_POST['recordarme'])) {
-  setcookie('recordarme', $email, time() + 60*60*24*7);
-  };
-
-  //SESSION!! instanciar autenticador, y active el session y gaurde el usuario.
+  //GUARDAMOS LA SESION//
+  $usuarioLogueado=$buscarUsuario->loguear();
 }
-}
+
+  //SI ESTA EL USUARIO LOGUEADO LO REDIRIGIMOS A SU PERFIL//
+
+  if(isset($_SESSION["email"])){
+    header("location:profile.php");
+  }
 
 
 ?>
@@ -101,3 +104,7 @@ if(empty($errores)){
   </div>
   </body>
 </html>
+
+<!-- QUERIDO DIARIO, SOY NICO DEL FUTURO:
+APRENDI A VALIDAR Y A COLOCAR BIEN LOS ERRORES.
+PD: TENGO QUE DARLE 50 DOLARES A GASTON, URGENTE. -->

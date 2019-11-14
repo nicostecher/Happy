@@ -1,118 +1,54 @@
 <?php
-//VARIABLES DE LOS DATOS QUE LLENA EL USUARIO EN EL FORMULARIO (ESTAN LLAMADOS DENTRO DE LOS VALUES)//
+
+require_once("clases/autoload.php");
+
+//VALUES VACIOS PARA RELLENAR//
 $nombre="";
 $apellido="";
 $email="";
 $password="";
 $confirmarPassword="";
+$avatar="";
 
-//VARIABLES QUE SE USAN PARA TIRAR EL MENSAJE DE "ERROR NO COMPLETASTE EL NOMBRE"//
-$completeSuNombre = "";
-$completeSuApellido = "";
-$completeSuEmail = "";
-$noEsUnMail= "";
-$completeSuContrasena = "";
-$repitaSuContrasena = "";
-$contrasenasNoSonIguales="";
-$errorCargaFotoDePerfil=  "";
-$errorFormatoFotoDePerfil="";
+$errores=[];
 
-//PERSISTENCIA//
 if($_POST){
-  $nombre=$_POST["nombre"];
-  $apellido=$_POST["apellido"];
-  $email=$_POST["email"];
-}
+      //PERSISTENCIA//
+      $nombre=$_POST["nombre"];
+      $apellido=$_POST["apellido"];
+      $email=$_POST["email"];
+      $password=$_POST["password"];
+      $confirmarPassword=$_POST["confirmarPassword"];
+      
 
-// VALIDACION //
-if ($_POST) {
-  $completeSuNombre = validarNombre();
-  $completeSuApellido = validarApellido();
-  $completeSuEmail = validarEmail();
-  $completeSuContrasena = validarContrasena();
+      //VALIDACION DEL LOS DATOS//
+      $validarRegistro=new validarRegistro($_POST["email"],$_POST["password"],$_POST["confirmarPassword"],$_FILES["avatar"],$_POST['nombre'],$_POST['apellido']);
+    
+      $errores=$validarRegistro->validar();
 
-//PONER LOS DATOS DEL USUARIO EN UN ARRAY, Y ESE ARRAY TRANSFORMARLO EN UN JSON//
-  $datosDelUsuario=[];
-  $hashPassword="";
-  $hashPassword=password_hash($_POST['password'],PASSWORD_DEFAULT);
-  $datosDelUsuario = [
-    'nombre' => $_POST['nombre'],
-    'apellido'=>($_POST['apellido']),
-    'email'=>($_POST['email']),
-    'password'=>$hashPassword,
-    'fotoDePerfil'=> ($_FILES['fotoDePerfil'])
-  ];
-  $bdd = file_get_contents('archivosDelUsuario.json');
-  $usuarios = json_decode($bdd,true);
-  $usuarios[] = $datosDelUsuario;
-  $jsonDatosDelUsuario=json_encode($usuarios);
-  file_put_contents('archivosDelUsuario.json',$jsonDatosDelUsuario);
+    if(!$errores){
+          if(isset($_FILES["avatar"])){
+          $ext=pathinfo($_FILES["avatar"]["name"],PATHINFO_EXTENSION);
+          $avatar = $email . "." . $ext;
+          move_uploaded_file($_FILES["avatar"]["tmp_name"],"fotodeUsuario/".$avatar);
+        }
+      
 
-}
+        $usuario=new usuario($_POST["nombre"],$_POST["apellido"] ,$_POST["email"],$_POST["password"], $avatar);
 
-//VALIDACION FORMULARIO//
-function validarNombre(){
-  if (strlen($_POST["nombre"])==0){
-    $completeSuNombre = "Complete su nombre <br>";
-    return $completeSuNombre;
+        $database=new baseDatos();
+        
+        $usuarioJson=$database->guardarUsuario($usuario);
 
-  }
-}
+      }
 
-function validarApellido(){
-  if (strlen($_POST["apellido"])==0){
-    $completeSuApellido = "Complete su apellido <br>";
-    return $completeSuApellido;
-  }
-}
-
-function validarEmail() {
-if (strlen($_POST["email"])==0) {
-  $completeSuEmail= "El campo esta vacio <br>";
-  return $completeSuEmail;
-
-}
-  if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)){
-   $noEsUnMail= "El campo no es un email <br>";
-   return $noEsUnMail;
-  }
-}
-
-function validarContrasena() {
-if (strlen ($_POST["password"])==0) {
-   $completeSuContrasena= "La contraseña esta vacia <br>";
-   return $completeSuContrasena;
-  }
-if (strlen ($_POST["confirmarPassword"])==0) {
-   $repitaSuContrasena= "Repita su contraseña <br>";
-   return $repitaSuContrasena;
-    }
-if (($_POST["password"])!==($_POST["confirmarPassword"])) {
-   $contrasenasNoSonIguales= "Las contraseñas no son iguales <br>";
-   return $contrasenasNoSonIguales;
- }
-}
-
-//VALIDACION FOTO DE PERFIL//
-function validarFoto (){
-  if ($_FILES){
-    if ($_FILES ["fotoDePerfil"]["error"]!=0){
-      $errorCargaFotoDePerfil= "Hubo un problema al cargar la Foto de Perfil <br>" ;
-    }
-   ($ext=pathinfo($_FILES["fotoDePerfil"]["name"],PATHINFO_EXTENSION));
-    if ($ext!="jpg"&&$ext!="png") {
-      $errorFormatoFotoDePerfil="La foto debe tener formato jpg o png <br>" ;
-    }
-    else {
-      moved_uploaded_file($_FILES["fotoDePerfil"]["tmp_name"],"TP/TP/foto-de-perfil/fotoDePerfil." . $ext);
-    }
-}
+      header("location:profile.php");
+ 
 }
 
 
-//VARIABLES HECHAS PARA JUNTAR LOS DATOS DEL FORMULARIO, EN UN ARRAY//
-$datosDelUsuario=[];
-$hashPassword="";
+
+
  ?>
 
 <!DOCTYPE html>
@@ -134,56 +70,58 @@ $hashPassword="";
       <main>
         <div class="registro">
           <h1>Registrate!</h1>
-        <form class="registro" action="registrate.php" method="post" enctype="multipart/form-data">
+        <form class="registro" action="registrate.php" method="POST" enctype="multipart/form-data">
             <label for="nombre">
                 <p>Nombre:</p>
-                <input id="nombre" type="text" name="nombre" value="<?= $nombre  ?>">
+                <input id="nombre" type="text" name="nombre" value="<?=$nombre?>">
                 <br>
-                <span class="error"><?= $completeSuNombre ?></span>
+                <small class="error"><?= $errores['nombre'] ?? '' ?></small>
             </label>
           <br>
           <br>
             <label for="apellido">
               <p>Apellido:</p>
-              <input id="apellido" type="text" name="apellido" value="<?= $apellido  ?>">
+              <input id="apellido" type="text" name="apellido" value="<?=$apellido?>">
               <br>
-              <span class="error"><?= $completeSuApellido ?></span>
+              <span class="error"><?= $errores['apellido'] ?? '' ?></span>
             </label>
           <br>
           <br>
             <label for="email">
               <p>Email: </p>
-              <input type="email" name="email" value="<?= $email  ?>">
+              <input type="email" name="email" value="<?=$email?>">
               <br>
-              <span class="error"><?= $completeSuEmail ?></span>
-              <span class="error"><?=$noEsUnMail ?></span>
+              <small class="error"><?= $errores['email'] ?? '' ?></small>
+              <small class="error"><?= $errores['email'] ?? '' ?></small>
             </label>
           <br>
           <br>
             <label for="password">
               <p>Contraseña:</p>
-              <input type="password" name="password" value="<?= $password  ?>">
+              <input type="password" name="password" value="<?=$password?>">
               <br>
+              <small class="error"><?= $errores['password'] ?? '' ?></small>
             </label>
           <br>
           <br>
             <label for="confirmarPassword">
             <p>Repetí tu contraseña:</p>
-            <input type="password" name="confirmarPassword" value="<?= $confirmarPassword  ?>">
+            <input type="password" name="confirmarPassword" value="<?=$confirmarPassword?>">
             <br>
-            <span class="error"><?= $completeSuContrasena ?>
-            <?= $contrasenasNoSonIguales ?>
-            <?= $repitaSuContrasena  ?>
-          </span>
+            <small class="error">
+              <?= $errores['password'][0] ?? '' ?> <br>
+                <?= $errores['password'][1] ?? '' ?>
+                <?= $errores['password'][2] ?? '' ?>
+          </small>
             </label>
 
           <br>
           <br>
 
-
-            <input type="file" name="fotoDePerfil" value="">
-            <?php echo $errorCargaFotoDePerfil ?>
-            <?php echo $errorFormatoFotoDePerfil ?>
+            <input type="file" name="avatar" value="">
+            <small class="error"><?=$errores["avatar"]["error"]?? ""?>
+            <?=$errores["avatar"]["error"]?? "" ?>
+            </small>
 
 
         <div class="botones">
@@ -196,7 +134,7 @@ $hashPassword="";
         </div>
       </main>
 
-
   <?php require_once("footer.php"); ?>
+  
   </body>
 </html>
