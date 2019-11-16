@@ -62,6 +62,7 @@ require_once("clases/autoload.php");
                 <ul>
                 <?php if(isset($_SESSION["email"])){?>
                   <li><a class="link" href="logout.php">cerrar sesión</a></li>
+                  <li><a class="link" href="profile.php"> Mi Perfil</a></li>
                   <?php }else{ ?>
                   <li><a class ="link" href="login.php">Login</a></li>
                   <li><a class= "link"href="registrate.php">Registrarse</a></li>

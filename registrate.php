@@ -9,7 +9,6 @@ $email="";
 $password="";
 $confirmarPassword="";
 $avatar="";
-
 $errores=[];
 
 if($_POST){
@@ -21,11 +20,13 @@ if($_POST){
       $confirmarPassword=$_POST["confirmarPassword"];
       
 
-      //VALIDACION DEL LOS DATOS//
+      //VALIDACION DE LOS DATOS//
       $validarRegistro=new validarRegistro($_POST["email"],$_POST["password"],$_POST["confirmarPassword"],$_FILES["avatar"],$_POST['nombre'],$_POST['apellido']);
     
       $errores=$validarRegistro->validar();
+     
 
+      //SI NO HAY ERRORES SUBIMOS LA IMAGEN DEL USUARIO AL SERVIDOR//
     if(!$errores){
           if(isset($_FILES["avatar"])){
           $ext=pathinfo($_FILES["avatar"]["name"],PATHINFO_EXTENSION);
@@ -33,16 +34,16 @@ if($_POST){
           move_uploaded_file($_FILES["avatar"]["tmp_name"],"fotodeUsuario/".$avatar);
         }
       
-
+        //SI NO HAY ERRORES CREAMOS EL USUARIO EN NUESTRO JSON//
         $usuario=new usuario($_POST["nombre"],$_POST["apellido"] ,$_POST["email"],$_POST["password"], $avatar);
 
         $database=new baseDatos();
         
         $usuarioJson=$database->guardarUsuario($usuario);
 
+        header("location:home.php");
       }
 
-      header("location:profile.php");
  
 }
 

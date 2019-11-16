@@ -1,5 +1,14 @@
 <?php
 require_once("clases/autoload.php");
+if (isset($_COOKIE['recordarme'])){
+ $usuarioRegistrado=new autenticador();
+ $cargarUsuario=$usuarioRegistrado->loguear($_COOKIE['recordarme']);
+
+}
+
+if(isset($_SESSION["email"])){
+ header('location:profile.php');
+}
 
 
 //VARIABLES DE LOS DATOS QUE LLENA EL USUARIO EN EL FORMULARIO (ESTAN LLAMADOS DENTRO DE LOS VALUES)//
@@ -14,36 +23,27 @@ $errores = [];
 
 
 if($_POST){
-
   //PERSISTENCIA//
   $email = $_POST['email'];
   $Password=$_POST['password'];
   
-  //VALIDAMOS EL LOGIN//
+  //VALIDAMOS LOS ERRORES//
+  $validarLogin = new ValidadorLogin($_POST['email'],$_POST['password']);
+  $errores = $validarLogin->validar();
+
+  //SI NO HAY ERRORES CONFIRMAMOS QUE EXISTA EL USUARIO//
   if(!$errores){
-    $validarLogin = new ValidadorLogin($_POST['email'],$_POST['password']);
-    $errores = $validarLogin->validar();
-    
-    $buscarUsuario= new Autenticador();
-    $usuarioRegistrado=$buscarUsuario->buscarUsuario($email);
+  $validarUsuario= new Autenticador();
+  $usuarioRegistrado=$validarUsuario->loguear($email); 
+ 
   
     
   }
 
-  //CREEAMOS LA COOKIE//
-  if(isset($_POST["recordarme"])){
-    setcookie("recordarme",$email,time() + 60*24*7);
-  }
-
-  //GUARDAMOS LA SESION//
-  $usuarioLogueado=$buscarUsuario->loguear();
+  
+  
+  
 }
-
-  //SI ESTA EL USUARIO LOGUEADO LO REDIRIGIMOS A SU PERFIL//
-
-  if(isset($_SESSION["email"])){
-    header("location:profile.php");
-  }
 
 
 ?>
@@ -76,16 +76,17 @@ if($_POST){
       </label>
       <br>
       <br>
-      <label for="contraseña">
+      <label for="password">
         <p>Contraseña:</p>
         <input type="password" name="password" value="" id="password" placeholder="Complete el campo">
         <br>
-        <?= $errores['password'][0] ?? '' ?>
+       <small class="error"><?= $errores['password'][0] ?? '' ?></small> 
       </label>
       <br>
 
-       <input type="checkbox" name="recordarme" id="recordarme" value="rec" checked>
+       <input type="checkbox" name="recordarme" id="recordarme" value="" checked>
        <label for="recordar">Recordarme</label>
+       <small class= "error"><?= $errores["recordarme"][0] ?? ""?></small>
       <br>
       <br>
       <p>
@@ -104,7 +105,3 @@ if($_POST){
   </div>
   </body>
 </html>
-
-<!-- QUERIDO DIARIO, SOY NICO DEL FUTURO:
-APRENDI A VALIDAR Y A COLOCAR BIEN LOS ERRORES.
-PD: TENGO QUE DARLE 50 DOLARES A GASTON, URGENTE. -->

@@ -7,14 +7,12 @@ class BaseDatos{
     $bd=file_get_contents("archivosDelUsuario.json");
 
     $usuarios=json_decode($bd,true);
-
     
-
     $usuario=[
       "nombre"=>$usuario->getNombre(),
       "apellido"=>$usuario->getApellido(),
       "email"=>$usuario->getEmail(),
-      "password"=>password_hash($usuario->getPassword(),PASSWORD_DEFAULT),
+      "password"=>Password_hash($usuario->getPassword(),PASSWORD_DEFAULT),
       "avatar"=>$usuario->getAvatar(),
     ];
 
@@ -28,7 +26,11 @@ class BaseDatos{
   
   }
  
+  
 };
+
+
+
 
 ?>
 

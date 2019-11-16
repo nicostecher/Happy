@@ -1,5 +1,30 @@
 <?php
 require_once("clases/autoload.php");
+
+if (isset($_COOKIE['recordame'])) {
+  $usuarioRegistrado=new autenticador();
+  $cargarUsuario=$usuarioRegistrado->loguear($_COOKIE['recordarme']);
+}
+
+if(!$_SESSION["email"]){
+  header('location:home.php');
+ }
+ 
+ 
+ $usuario = file_get_contents('archivosDelUsuario.json');
+ 
+ $usuarios = json_decode($usuario, true);
+
+foreach($usuarios as $usuario){
+  if($usuario){
+    $_SESSION["email"]=$usuario["email"];
+    $_SESSION['nombre']=$usuario['nombre'];
+    $_SESSION["avatar"]=$usuario["avatar"];
+  }
+  }
+  
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +42,7 @@ require_once("clases/autoload.php");
   <div class="contenedor">
     <?php
   require_once ("header.php");
+
   ?>
 
       <main>
@@ -25,33 +51,22 @@ require_once("clases/autoload.php");
         </div>
         <div>
           <div class="contenedor-avatar">
-            <img class="avatar" src="imagenes/avatar.png" alt="avatar">
           </div>
         </div>
         <div class="padre-datos">
           <div class="datos">
               <p>Nombre:</p>
               <br>
-              <p>Apellido:</p>
-              <br>
-              <p>Dirección</p>
-              <br>
-              <p>Teléfono</p>
-              <br>
               <p>E-Mail:</p>
               <br>
               </div>
           <div class="datos-rellenados">
-              <p>jhon</p>
+              <p></p>
+              <p><?=$usuario['nombre'];?><p>
               <br>
-              <p>Doe</p>
-              <br>
-              <p>Av. Corrientes 3500, C.A.B.A</p>
-              <br>
-              <p>011 4752-8739</p>
-              <br>
-              <p>john_doe@someone.com</p>
-              <br>
+              <p><?=$usuario['email'];?><p>
+             
+              
           </div>
         </div>
 

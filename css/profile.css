@@ -54,16 +54,15 @@ h1{
 float:left;
 margin: 0 auto;
 padding: 5%;
-margin-left: 200px;
+margin-left: 215px;
 }
 
 
 .datos-rellenados{
-  float: right;
   text-align: left;
   margin: 0 auto;
   padding: 5%;
-  margin-right: 43px;
+  margin-right: 1%;
 }
 
 h2{
@@ -74,38 +73,11 @@ h2{
 }
 
 
-.pie{
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  bottom: 0;
-  height: 50px;;
-  background-color: #45454d;
-}
-
-.pie-pagina {
-  margin-top: 5px;
-  text-align: center;
+p{
   font-family: 'Comfortaa', cursive;
-  border-bottom: 1px solid gray;
-
-}
-.pie-pagina a{
-
-  color: white;
- }
-
-.contacto{
-  margin-top: 5px;
-  text-align: center;
-  border-bottom: 1px solid gray;
+  font-weight: bold;
 }
 
-.contacto p a{
-  color: white;
-  font-family: 'Comfortaa', cursive;
-  cursor: pointer;
-}
 
 
 
@@ -150,36 +122,4 @@ h2{
       margin-right: 30px;
 
   }
-
-  /* aca empieza el footer*/
-
-
-  .pie{
-    overflow: hidden;
-    bottom: 0;
-  }
-
-.pie-pagina{
-  margin-top: 15px;
-  margin-left: 5px;
-  float: left;
-  font-family: 'Comfortaa', cursive;
-  border: none;
-}
-
-.pie-pagina a{
- color: white;
- font-family: 'Comfortaa', cursive;
- cursor: pointer;
-}
-
-.contacto{
-  float: right;
-  margin-top: 15px;
-  margin-right: 20px;
-  border: none;
-
-}
-
-
 }

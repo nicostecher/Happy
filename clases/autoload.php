@@ -9,6 +9,6 @@ require_once("carritoClase.php");
 require_once("registroClase.php");
 require_once("loginClase.php");
 require_once("baseDatos.php");
-require_once("validarregistro.php");
+require_once("validarRegistro.php");
 require_once("autenticador.php");
 ?>

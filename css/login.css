@@ -69,6 +69,10 @@ input placeholder {
 
 }
 
+.error{
+  color: red;
+}
+
 /* version de escritorio*/
 
 @media (min-width: 1024px){
